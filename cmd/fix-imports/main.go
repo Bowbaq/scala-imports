@@ -7,10 +7,15 @@ import (
 	"github.com/codegangsta/cli"
 )
 
+var (
+	Version string
+)
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "fix-imports"
 	app.Usage = "organize imports in a scala project"
+	app.Version = Version
 	app.Flags = []cli.Flag{
 		cli.BoolFlag{
 			Name:  "verbose",

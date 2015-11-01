@@ -7,14 +7,14 @@ import (
 )
 
 func debug(v ...interface{}) {
-	if !Verbose {
+	if !config.Verbose {
 		return
 	}
 	fmt.Println(v...)
 }
 
 func debugf(f string, v ...interface{}) {
-	if !Verbose {
+	if !config.Verbose {
 		return
 	}
 	fmt.Printf(f, v...)

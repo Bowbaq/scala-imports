@@ -60,7 +60,7 @@ func (i *imports) Len() int {
 func (i *imports) Less(x, y int) bool {
 	a, b := (*i)[x], (*i)[y]
 
-	for _, comp := range config.Comparators {
+	for _, comp := range config.comparators {
 		switch comp(a, b) {
 		case -1:
 			return true

@@ -2,10 +2,7 @@ package scalaimports
 
 import "strings"
 
-var (
-	compareInternal = reverse(comparePrefix(config.Internal))
-	compareLang     = comparePrefix(config.Lang)
-)
+type comparator func(string, string) int
 
 func lexicographical(a, b string) int {
 	if a < b {
@@ -15,13 +12,13 @@ func lexicographical(a, b string) int {
 	return 1
 }
 
-func reverse(cmp Comparator) Comparator {
+func reverse(cmp comparator) comparator {
 	return func(a, b string) int {
 		return cmp(a, b) * -1
 	}
 }
 
-func comparePrefix(prefixes []string) Comparator {
+func comparePrefix(prefixes []string) comparator {
 	dottedPrefixes := make([]string, len(prefixes))
 	for i, p := range prefixes {
 		dottedPrefixes[i] = p + "."

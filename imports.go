@@ -148,23 +148,40 @@ func (i *imports) Group() {
 		group := groups[prefix]
 		if len(group) == 1 {
 			grouped = append(grouped, prefix+group[0])
-		} else {
-			items, renames := make([]string, 0), make([]string, 0)
-			for _, g := range group {
-				if strings.Contains(g, "=>") {
-					renames = append(renames, g[1:len(g)-1])
-				} else {
-					items = append(items, g)
-				}
-			}
+			continue
+		}
 
-			items = append(renames, items...)
-
-			formatted := prefix + "{" + strings.Join(items, ", ") + "}"
-			if len(formatted) > config.MaxLineLength || contains(items, "_") {
-				formatted = prefix + "_"
+		items, renames := make([]string, 0), make([]string, 0)
+		for _, g := range group {
+			if strings.Contains(g, "=>") {
+				renames = append(renames, g[1:len(g)-1])
+			} else {
+				items = append(items, g)
 			}
+		}
+
+		if len(renames) == 0 && contains(items, "_") {
+			grouped = append(grouped, prefix+"_")
+			continue
+		}
+
+		formatted := prefix + "{" + strings.Join(append(renames, items...), ", ") + "}"
+		if len(formatted) <= config.MaxLineLength {
 			grouped = append(grouped, formatted)
+			continue
+		}
+
+		if len(renames) == 0 {
+			grouped = append(grouped, prefix+"_")
+			continue
+		}
+
+		formatted = prefix + "{" + strings.Join(append(renames, "_"), ", ") + "}"
+		if len(formatted) <= config.MaxLineLength {
+			grouped = append(grouped, formatted)
+		} else {
+			grouped = append(grouped, prefix+"_")
+			grouped = append(grouped, prefix+"{"+strings.Join(renames, ", ")+"}")
 		}
 	}
 

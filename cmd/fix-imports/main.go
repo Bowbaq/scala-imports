@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/Bowbaq/scalaimports"
+	"github.com/Bowbaq/scala-imports"
 	"github.com/codegangsta/cli"
 )
 

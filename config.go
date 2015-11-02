@@ -50,7 +50,7 @@ func SetConfig(c Config) {
 	c.comparators = []comparator{compareInternal, compareLang, lexicographical}
 
 	if c.Parallelism == 0 {
-		c.Parallelism = 1
+		c.Parallelism = uint(runtime.NumCPU())
 	}
 
 	config = c

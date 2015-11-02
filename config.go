@@ -6,7 +6,17 @@ var (
 	compareInternal comparator
 	compareLang     comparator
 
-	config = NewConfig()
+	DefaultConfig = Config{
+		Internal:      []string{},
+		Lang:          []string{"scala", "java", "javax"},
+		Rewrites:      make(map[string]string),
+		Ignore:        []string{},
+		Remove:        []string{},
+		MaxLineLength: 110,
+		Parallelism:   uint(runtime.NumCPU()),
+	}
+
+	config Config
 )
 
 type Config struct {
@@ -32,24 +42,6 @@ type Config struct {
 	Verbose bool
 
 	comparators []comparator
-}
-
-func NewConfig() Config {
-	c := Config{
-		Internal:      []string{},
-		Lang:          []string{"scala", "java", "javax"},
-		Rewrites:      make(map[string]string),
-		Ignore:        []string{},
-		Remove:        []string{},
-		MaxLineLength: 110,
-		Parallelism:   uint(runtime.NumCPU()),
-	}
-
-	compareInternal = reverse(comparePrefix(c.Internal))
-	compareLang = comparePrefix(c.Lang)
-	c.comparators = []comparator{compareInternal, compareLang, lexicographical}
-
-	return c
 }
 
 func SetConfig(c Config) {

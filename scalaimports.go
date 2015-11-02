@@ -9,6 +9,10 @@ import (
 	"github.com/Bowbaq/pool"
 )
 
+func init() {
+	SetConfig(DefaultConfig)
+}
+
 func Format(root string) {
 	var scalaFiles []string
 

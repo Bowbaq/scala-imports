@@ -1,40 +1,30 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/Bowbaq/scala-imports"
 	"github.com/codegangsta/cli"
+	"github.com/spf13/viper"
 )
 
 var (
 	Version string
-	config  = scalaimports.Config{
-		Internal: []string{"ai", "common", "dataImport", "emailService", "workflowEngine", "mailgunWebhookService"},
-		Lang:     []string{"scala", "java", "javax"},
-		Rewrites: map[string]string{
-			"Tap._":          "util.Tap._",
-			"MustMatchers._": "org.scalatest.MustMatchers._",
-			"concurrent.":    "scala.concurrent.",
-			"collection.":    "scala.collection.",
-			"Keys._":         "sbt.Keys._",
-		},
-		Ignore: []string{
-			"scala.collection.JavaConversions",
-			"scala.collection.JavaConverters",
-			"scala.concurrent.ExecutionContext.Implicits",
-			"scala.language.implicitConversions",
-			"scala.language.higherKinds",
-			"scala.sys.process",
-			"ai.somatix.data.csv.CanBuildFromCsv",
-		},
-		Remove: []string{
-			"import scala.Some",
-		},
-
-		MaxLineLength: 110,
-	}
+	config  scalaimports.Config
 )
+
+func init() {
+	viper.SetConfigName(".fix-imports")
+	viper.AddConfigPath(".")
+	viper.AddConfigPath("$HOME")
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Println("Error reading config file: %s\n", err)
+		os.Exit(-1)
+	}
+
+	viper.Unmarshal(&config)
+}
 
 func main() {
 	app := cli.NewApp()

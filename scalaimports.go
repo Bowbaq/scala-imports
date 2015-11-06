@@ -29,8 +29,10 @@ func Format(root string) {
 			debug("  ", path)
 		}
 	} else {
-		debug("Formatting", root)
-		scalaFiles = []string{root}
+		if isScalaFile(root) {
+			debug("Formatting", root)
+			scalaFiles = []string{root}
+		}
 	}
 
 	cleanFiles(scalaFiles)

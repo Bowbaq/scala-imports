@@ -84,7 +84,9 @@ func (f *ScalaFile) Rewrite() error {
 	defer file.Close()
 
 	// Write package line + newline
-	file.WriteString(strings.Join(f.PackageLines, "\n") + "\n\n")
+	if len(f.PackageLines) > 0 {
+		file.WriteString("package " + strings.Join(f.PackageLines, ".") + "\n\n")
+	}
 
 	// Write clean imports + newline
 	if len(f.ImportLines) > 0 {

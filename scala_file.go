@@ -102,7 +102,7 @@ func (f *ScalaFile) Rewrite() error {
 type packageLines []string
 
 func (l *packageLines) Add(line string) {
-	*l = append(*l, strings.TrimSpace(line))
+	*l = append(*l, strings.TrimPrefix(strings.TrimSpace(line), "package "))
 }
 
 type code []string

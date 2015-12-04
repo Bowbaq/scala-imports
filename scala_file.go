@@ -2,6 +2,7 @@ package scalaimports
 
 import (
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -112,8 +113,10 @@ func (c *code) Add(line string) {
 }
 
 func (c *code) Contains(needle string) bool {
+	re := regexp.MustCompile(`\b` + needle + `\b`)
+
 	for _, line := range *c {
-		if strings.Contains(line, needle) {
+		if re.MatchString(line) {
 			return true
 		}
 	}

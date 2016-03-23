@@ -84,6 +84,8 @@ func cleanFiles(paths []string) {
 	wg.Add(len(paths))
 
 	p := pool.NewPool(config.Parallelism, func(id uint, payload interface{}) interface{} {
+		defer wg.Done()
+
 		path := payload.(string)
 
 		debug("Worker", id, "processing", path)
@@ -99,8 +101,6 @@ func cleanFiles(paths []string) {
 			debug("Worker", id, "error rewriting", path, "-", err)
 			return err
 		}
-
-		wg.Done()
 
 		return nil
 	})

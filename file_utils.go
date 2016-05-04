@@ -14,6 +14,10 @@ func isDir(path string) bool {
 
 func findScalaFiles(root string) (paths []string) {
 	filepath.Walk(root, func(path string, f os.FileInfo, err error) error {
+		if f.IsDir() && f.Name() == "target" {
+			debug("Ignoring", path)
+			return filepath.SkipDir
+		}
 		if isScalaFile(path) {
 			paths = append(paths, path)
 		}

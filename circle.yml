@@ -1,10 +1,11 @@
 deployment:
   master:
-    branch: master
+    branch: [master, mb-fix-compilation]
     commands:
+      - sudo apt-get install g++-multilib
       - go get github.com/mitchellh/gox
       - go get github.com/tcnksm/ghr
-      - gox -ldflags "-X main.Version $CIRCLE_BUILD_NUM" -output "dist/fix_imports_{{.OS}}_{{.Arch}}":
+      - gox -osarch="!linux/arm" -ldflags "-X main.Version $CIRCLE_BUILD_NUM" -output "dist/fix_imports_{{.OS}}_{{.Arch}}":
           pwd: cmd/fix-imports
-      - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME "v$CIRCLE_BUILD_NUM" dist/:
-          pwd: cmd/fix-imports
+      # - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME "v$CIRCLE_BUILD_NUM" dist/:
+      #     pwd: cmd/fix-imports

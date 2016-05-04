@@ -37,7 +37,7 @@ func main() {
 			Usage: "enable debug output",
 		},
 	}
-	app.Action = func(c *cli.Context) {
+	app.Action = func(c *cli.Context) error {
 		if c.Bool("verbose") {
 			config.Verbose = true
 		}
@@ -51,6 +51,8 @@ func main() {
 		} else {
 			scalaimports.Format(".")
 		}
+
+		return nil
 	}
 
 	app.Run(os.Args)
